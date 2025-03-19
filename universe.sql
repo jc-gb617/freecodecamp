@@ -51,7 +51,7 @@ CREATE TABLE public.galaxy (
     galaxy_id integer NOT NULL,
     name character varying(100) NOT NULL,
     galaxy_age integer NOT NULL,
-    galaxy_shape_id integer NOT NULL,
+    galaxy_shapes_id integer NOT NULL,
     galactic_cluster character varying(10) NOT NULL
 );
 
@@ -77,8 +77,8 @@ ALTER TABLE public.galaxy ALTER COLUMN galaxy_id ADD GENERATED ALWAYS AS IDENTIT
 --
 
 CREATE TABLE public.galaxy_shapes (
-    galaxy_shape_id integer NOT NULL,
-    name character varying(100),
+    galaxy_shapes_id integer NOT NULL,
+    name character varying(100) NOT NULL,
     description text
 );
 
@@ -86,11 +86,11 @@ CREATE TABLE public.galaxy_shapes (
 ALTER TABLE public.galaxy_shapes OWNER TO freecodecamp;
 
 --
--- Name: galaxy_shapes_galaxy_shape_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
+-- Name: galaxy_shapes_galaxy_shapes_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE public.galaxy_shapes ALTER COLUMN galaxy_shape_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.galaxy_shapes_galaxy_shape_id_seq
+ALTER TABLE public.galaxy_shapes ALTER COLUMN galaxy_shapes_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.galaxy_shapes_galaxy_shapes_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -275,10 +275,10 @@ SELECT pg_catalog.setval('public.galaxy_galaxy_id_seq', 6, true);
 
 
 --
--- Name: galaxy_shapes_galaxy_shape_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
+-- Name: galaxy_shapes_galaxy_shapes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.galaxy_shapes_galaxy_shape_id_seq', 3, true);
+SELECT pg_catalog.setval('public.galaxy_shapes_galaxy_shapes_id_seq', 3, true);
 
 
 --
@@ -319,11 +319,19 @@ ALTER TABLE ONLY public.galaxy
 
 
 --
+-- Name: galaxy_shapes galaxy_shapes_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.galaxy_shapes
+    ADD CONSTRAINT galaxy_shapes_name_key UNIQUE (name);
+
+
+--
 -- Name: galaxy_shapes galaxy_shapes_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
 ALTER TABLE ONLY public.galaxy_shapes
-    ADD CONSTRAINT galaxy_shapes_pkey PRIMARY KEY (galaxy_shape_id);
+    ADD CONSTRAINT galaxy_shapes_pkey PRIMARY KEY (galaxy_shapes_id);
 
 
 --
@@ -383,11 +391,11 @@ ALTER TABLE ONLY public.star
 
 
 --
--- Name: galaxy galaxy_shape_id; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: galaxy galaxy_shapes_id; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
 ALTER TABLE ONLY public.galaxy
-    ADD CONSTRAINT galaxy_shape_id FOREIGN KEY (galaxy_shape_id) REFERENCES public.galaxy_shapes(galaxy_shape_id);
+    ADD CONSTRAINT galaxy_shapes_id FOREIGN KEY (galaxy_shapes_id) REFERENCES public.galaxy_shapes(galaxy_shapes_id);
 
 
 --
